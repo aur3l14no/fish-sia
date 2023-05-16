@@ -1,0 +1,162 @@
+mixed-port: 7890
+ipv6: true
+log-level: info
+external-controller: 127.0.0.1:9090
+
+find-process-mode: strict
+
+mode: rule
+
+#自定义 geodata url
+geox-url:
+  geoip: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat"
+  geosite: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat"
+  mmdb: "https://cdn.jsdelivr.net/gh/Loyalsoldier/geoip@release/Country.mmdb"
+
+proxy-providers:
+  provider:
+    type: http
+    url: https://www.baidu.com/
+    interval: 3600
+    path: ./provider.yaml
+    health-check:
+      enable: true
+      interval: 600
+      url: https://cp.cloudflare.com/generate_204
+  provider-fixed-ss:
+    type: http
+    url: https://www.baidu.com/
+    interval: 3600
+    path: ./provider_fixed_ss.yaml
+    health-check:
+      enable: true
+      interval: 600
+      url: https://cp.cloudflare.com/generate_204
+
+proxy-groups:
+  - name: Proxy
+    type: select
+    use:
+      - provider
+    proxies:
+      - Fastest-ALL
+      - Fixed-Default
+
+  - name: Fixed-Default
+    type: select
+    use:
+      - provider
+    filter: "[自建]"
+    # proxies:
+    #   - Fixed-Relay
+
+  - name: Fixed-US
+    type: select
+    filter: (?i)[自建].*(US|美国)
+    use:
+      - provider
+    # proxies:
+    #   - Fixed-Relay
+
+  - name: Fastest-ALL
+    type: url-test
+    use:
+      - provider
+    url: "https://cp.cloudflare.com/generate_204"
+    interval: 600
+    tolerance: 100
+
+  - name: Fastest-US
+    type: url-test
+    filter: (?i)US|美国
+    use:
+      - provider
+    url: "https://cp.cloudflare.com/generate_204"
+    interval: 600
+    tolerance: 100
+
+  - name: Fastest-JP
+    type: url-test
+    filter: (?i)JP|日本
+    use:
+      - provider
+    url: "https://cp.cloudflare.com/generate_204"
+    interval: 600
+    tolerance: 100
+
+  - name: OpenAI
+    type: select
+    proxies:
+      - Fastest-US
+      - Fixed-US
+
+  - name: Fallback
+    type: select
+    proxies:
+      - Proxy
+      - DIRECT
+
+  # - name: Fixed-Relay
+  #   type: relay
+  #   use:
+  #     - provider-fixed-ss
+  #   proxies:
+  #     - Fastest-ALL
+  #     # - &fixed_ss_name "[自建SS] RN-US"
+
+rule_provider_conf: &rule_provider_conf
+  interval: 259200
+  type: http
+
+rule-providers:
+  fish-direct:
+    path: ./rules/fish-direct.list
+    behavior: classical
+    url: https://raw.githubusercontent.com/aur3l14no/fish-sia/main/Rules/direct.list
+    <<: *rule_provider_conf
+  OpenAI:
+    path: ./rules/OpenAI.list
+    behavior: classical
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/OpenAI/OpenAI.list
+    <<: *rule_provider_conf
+  ChinaMax_Domain:
+    path: ./rules/ChinaMax_Domain.list
+    behavior: domain
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ChinaMax/ChinaMax_Domain.list
+    <<: *rule_provider_conf
+  ChinaMax:
+    path: ./rules/ChinaMax.list
+    behavior: classical
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ChinaMax/ChinaMax.list
+    <<: *rule_provider_conf
+  Global_Domain:
+    path: ./rules/Global_Domain.list
+    behavior: domain
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Global/Global_Domain.list
+    <<: *rule_provider_conf
+  Global:
+    path: ./rules/Global.list
+    behavior: classical
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Global/Global.list
+    <<: *rule_provider_conf
+  Advertising_domain:
+    path: ./rules/Advertising_domain.list
+    behavior: domain
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Advertising/Advertising_Domain.list
+    <<: *rule_provider_conf
+  Advertising:
+    path: ./rules/Advertising.list
+    behavior: classical
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Advertising/Advertising.list
+    <<: *rule_provider_conf
+
+rules:
+  - RULE-SET,fish-direct,DIRECT
+  - RULE-SET,OpenAI,OpenAI
+  - RULE-SET,ChinaMax_Domain,DIRECT
+  - RULE-SET,ChinaMax,DIRECT
+  - RULE-SET,Global_Domain,Proxy
+  - RULE-SET,Global,Proxy
+  - GEOSITE,CN,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,Fallback
