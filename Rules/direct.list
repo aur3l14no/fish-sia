@@ -1,0 +1,9 @@
+# DIRECT by PROCESS
+PROCESS-NAME,parsecd
+PROCESS-NAME,Microsoft Remote Desktop
+PROCESS-NAME,rustdesk
+PROCESS-NAME,zerotier-one
+PROCESS-NAME,Nutstore
+
+# DIRECT by USER-AGENT
+USER-AGENT,*MicroMessenger*
