@@ -7,7 +7,6 @@ find-process-mode: strict
 
 mode: rule
 
-#自定义 geodata url
 geox-url:
   geoip: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat"
   geosite: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat"
@@ -16,7 +15,7 @@ geox-url:
 proxy-providers:
   provider:
     type: http
-    url: https://www.baidu.com/
+    url: https://cp.cloudflare.com/generate_204
     interval: 3600
     path: ./provider.yaml
     health-check:
@@ -25,7 +24,7 @@ proxy-providers:
       url: https://cp.cloudflare.com/generate_204
   provider-fixed-ss:
     type: http
-    url: https://www.baidu.com/
+    url: https://cp.cloudflare.com/generate_204
     interval: 3600
     path: ./provider_fixed_ss.yaml
     health-check:
@@ -85,10 +84,10 @@ proxy-groups:
     tolerance: 100
 
   - name: OpenAI
-    type: select
+    type: fallback
     proxies:
-      - Fastest-US
       - Fixed-US
+      - Fastest-US
 
   - name: Fallback
     type: select
@@ -105,14 +104,14 @@ proxy-groups:
   #     # - &fixed_ss_name "[自建SS] RN-US"
 
 rule_provider_conf: &rule_provider_conf
-  interval: 259200
+  interval: 259200 # 3d
   type: http
 
 rule-providers:
   fish-direct:
     path: ./rules/fish-direct.list
     behavior: classical
-    url: https://raw.githubusercontent.com/aur3l14no/fish-sia/main/Rules/direct.list
+    url: https://raw.githubusercontent.com/aur3l14no/fish-sia/main/public-artifacts/Rules/direct.list
     <<: *rule_provider_conf
   OpenAI:
     path: ./rules/OpenAI.list

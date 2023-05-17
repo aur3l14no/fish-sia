@@ -1,4 +1,6 @@
 /site/
+/Rules/
+/Configs/
 
 # General
 .DS_Store
