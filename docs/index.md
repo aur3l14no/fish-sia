@@ -4,11 +4,14 @@ Fish's Scientific Internet Access.
 
 ## Project layout
 
-    mkdocs.yml    # The configuration file.
-    Rules/
-        *.list    # rule-set / domain-set
-        ...       # Other markdown pages, images and other files.
-    Scripts/
+    public-artifacts        # 公共文件
+        Rules               # 公共的 Rules
+            Surge           # Surge List
+        Configs             # 公共的 Configs
+            ClashMeta.yaml  # Clash.Meta 的配置文件, 使用前需修改其中的 provider
+
+    Configs                 # 私人的 Configs
+    Rules                   # 私人的 Rules
 
 ## 策略组介绍
 

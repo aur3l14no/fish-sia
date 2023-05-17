@@ -3,7 +3,8 @@
 PUBLIC_FOLDER=public-artifacts
 
 cat Configs/ClashMeta.yaml |
-    sed 's|https://gist\.githubusercontent\.com/aur3l14no.*|https://cp.cloudflare.com/generate_204|g' \
+    sed 's|https://gist\.githubusercontent\.com/aur3l14no.*|https://cp.cloudflare.com/generate_204|' |
+    sed 's|.* # SECRET||' \
     > public-artifacts/Configs/ClashMeta.yaml
 
 diff Configs/ClashMeta.yaml ${PUBLIC_FOLDER}/Configs/ClashMeta.yaml

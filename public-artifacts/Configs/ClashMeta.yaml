@@ -12,6 +12,15 @@ geox-url:
   geosite: "https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat"
   mmdb: "https://cdn.jsdelivr.net/gh/Loyalsoldier/geoip@release/Country.mmdb"
 
+sniffer:
+  enable: true
+  sniff:
+    TLS:
+      ports: [443, 8443]
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+
 proxy-providers:
   provider:
     type: http
@@ -27,6 +36,7 @@ proxy-providers:
     url: https://cp.cloudflare.com/generate_204
     interval: 3600
     path: ./provider_fixed_ss.yaml
+    dialer-proxy: Fastest-ALL
     health-check:
       enable: true
       interval: 600
@@ -45,17 +55,15 @@ proxy-groups:
     type: select
     use:
       - provider
-    filter: "[自建]"
-    # proxies:
-    #   - Fixed-Relay
+      - provider-fixed-ss
+    filter: \[自建(SS)?\]
 
   - name: Fixed-US
     type: select
-    filter: (?i)[自建].*(US|美国)
+    filter: (?i)\[自建(SS)?].*(US|美国)
     use:
       - provider
-    # proxies:
-    #   - Fixed-Relay
+      - provider-fixed-ss
 
   - name: Fastest-ALL
     type: url-test
@@ -95,58 +103,50 @@ proxy-groups:
       - Proxy
       - DIRECT
 
-  # - name: Fixed-Relay
-  #   type: relay
-  #   use:
-  #     - provider-fixed-ss
-  #   proxies:
-  #     - Fastest-ALL
-  #     # - &fixed_ss_name "[自建SS] RN-US"
-
 rule_provider_conf: &rule_provider_conf
   interval: 259200 # 3d
   type: http
 
 rule-providers:
   fish-direct:
-    path: ./rules/fish-direct.list
+    path: ./rules/fish-direct.yaml
     behavior: classical
-    url: https://raw.githubusercontent.com/aur3l14no/fish-sia/main/public-artifacts/Rules/direct.list
+    url: https://raw.githubusercontent.com/aur3l14no/fish-sia/main/public-artifacts/Rules/Clash/direct.yaml
     <<: *rule_provider_conf
   OpenAI:
-    path: ./rules/OpenAI.list
+    path: ./rules/OpenAI.yaml
     behavior: classical
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/OpenAI/OpenAI.list
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml
     <<: *rule_provider_conf
   ChinaMax_Domain:
-    path: ./rules/ChinaMax_Domain.list
+    path: ./rules/ChinaMax_Domain.yaml
     behavior: domain
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ChinaMax/ChinaMax_Domain.list
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMax/ChinaMax_Domain.yaml
     <<: *rule_provider_conf
   ChinaMax:
-    path: ./rules/ChinaMax.list
+    path: ./rules/ChinaMax.yaml
     behavior: classical
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ChinaMax/ChinaMax.list
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMax/ChinaMax.yaml
     <<: *rule_provider_conf
   Global_Domain:
-    path: ./rules/Global_Domain.list
+    path: ./rules/Global_Domain.yaml
     behavior: domain
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Global/Global_Domain.list
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Global/Global_Domain.yaml
     <<: *rule_provider_conf
   Global:
-    path: ./rules/Global.list
+    path: ./rules/Global.yaml
     behavior: classical
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Global/Global.list
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Global/Global.yaml
     <<: *rule_provider_conf
   Advertising_domain:
-    path: ./rules/Advertising_domain.list
+    path: ./rules/Advertising_domain.yaml
     behavior: domain
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Advertising/Advertising_Domain.list
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Advertising/Advertising_Domain.yaml
     <<: *rule_provider_conf
   Advertising:
-    path: ./rules/Advertising.list
+    path: ./rules/Advertising.yaml
     behavior: classical
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Advertising/Advertising.list
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Advertising/Advertising.yaml
     <<: *rule_provider_conf
 
 rules:
