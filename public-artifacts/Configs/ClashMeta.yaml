@@ -1,8 +1,8 @@
 mixed-port: 7890
 ipv6: true
 log-level: info
-external-controller: 127.0.0.1:59999
-
+external-controller: ""
+secret: ""
 
 find-process-mode: strict
 
@@ -16,7 +16,7 @@ geox-url:
 proxy-providers:
   provider:
     type: http
-    url: https://cp.cloudflare.com/generate_204
+    url: ""
     interval: 3600
     path: ./provider.yaml
     health-check:
@@ -25,7 +25,7 @@ proxy-providers:
       url: https://cp.cloudflare.com/generate_204
   provider-fixed-ss:
     type: http
-    url: https://cp.cloudflare.com/generate_204
+    url: ""
     interval: 3600
     path: ./provider_fixed_ss.yaml
     dialer-proxy: Fastest-ALL
