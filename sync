@@ -5,5 +5,7 @@ LOCAL_PATH="${HOME}/.config/clash-meta/ClashMeta.yaml"
 
 sed 's/".*"\s*#\s*SECRET/""/' "${LOCAL_PATH}" \
     > public-artifacts/Configs/ClashMeta.yaml
+sed -i 's@https://gh\..*\.xyz/raw/@https://raw.githubusercontent.com/@' public-artifacts/Configs/ClashMeta.yaml
+sed -i 's@https://gh\..*\.xyz/gist/@https://gist.githubusercontent.com/@' public-artifacts/Configs/ClashMeta.yaml
 
 diff "${LOCAL_PATH}" ${PUBLIC_FOLDER}/Configs/ClashMeta.yaml

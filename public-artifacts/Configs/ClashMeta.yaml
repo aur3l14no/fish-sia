@@ -47,11 +47,11 @@ dns:
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   fake-ip-filter:
-    - '*.lan'
+    - "*.lan"
   nameserver-policy:
-    'www.baidu.com': '114.114.114.114'
-    '+.internal.crop.com': '10.0.0.1'
-    'geosite:cn': https://doh.pub/dns-query
+    "www.baidu.com": "114.114.114.114"
+    "+.internal.crop.com": "10.0.0.1"
+    "geosite:cn": https://doh.pub/dns-query
   nameserver:
     - https://doh.pub/dns-query
     - https://dns.alidns.com/dns-query
@@ -68,9 +68,9 @@ dns:
     ipcidr:
       - 240.0.0.0/4
     domain:
-      - '+.google.com'
-      - '+.facebook.com'
-      - '+.youtube.com'
+      - "+.google.com"
+      - "+.facebook.com"
+      - "+.youtube.com"
 
 sniffer:
   enable: true
@@ -78,11 +78,11 @@ sniffer:
     - tls
     - http
   skip-domain:
-    - 'Mijia Cloud'
-    - 'dlg.io.mi.com'
-    - '+.apple.com'
+    - "Mijia Cloud"
+    - "dlg.io.mi.com"
+    - "+.apple.com"
   force-domain:
-    - 'google.com'
+    - "google.com"
   port-whitelist:
     - 443
     - 8000-9000
@@ -136,7 +136,7 @@ proxy-groups:
     interval: 600
     tolerance: 100
 
-  - name: OpenAI
+  - name: Restricted
     type: fallback
     proxies:
       - Fixed-US
@@ -158,10 +158,10 @@ rule-providers:
     behavior: classical
     url: https://raw.githubusercontent.com/aur3l14no/fish-sia/main/public-artifacts/Rules/Clash/direct.yaml
     <<: *rule_provider_conf
-  OpenAI:
-    path: ./rules/OpenAI.yaml
+  Restricted:
+    path: ./rules/fish-restricted.yaml
     behavior: classical
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml
+    url: https://raw.githubusercontent.com/aur3l14no/fish-sia/main/public-artifacts/Rules/Clash/restricted.yaml
     <<: *rule_provider_conf
   ChinaMax_Domain:
     path: ./rules/ChinaMax_Domain.yaml
@@ -196,7 +196,7 @@ rule-providers:
 
 rules:
   - RULE-SET,fish-direct,DIRECT
-  - RULE-SET,OpenAI,OpenAI
+  - RULE-SET,Restricted,Restricted
   - RULE-SET,ChinaMax_Domain,DIRECT
   - RULE-SET,ChinaMax,DIRECT
   - RULE-SET,Global_Domain,Proxy
