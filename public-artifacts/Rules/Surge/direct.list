@@ -4,6 +4,9 @@ PROCESS-NAME,Microsoft Remote Desktop
 PROCESS-NAME,rustdesk
 PROCESS-NAME,zerotier-one
 PROCESS-NAME,Nutstore
+PROCESS-NAME,qbittorrent
+PROCESS-NAME,tailscaled
+PROCESS-NAME,clash-meta
 
 # DIRECT by USER-AGENT
 USER-AGENT,*MicroMessenger*
